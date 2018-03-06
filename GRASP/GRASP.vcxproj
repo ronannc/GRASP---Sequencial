@@ -18,6 +18,17 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="EntradaDeDados.h" />
+    <ClInclude Include="MetodosCompletaSolucao.h" />
+    <ClInclude Include="MetodosRetiraItem.h" />
+    <ClInclude Include="objeto.h" />
+    <ClInclude Include="Selection_Sort.h" />
+    <ClInclude Include="SimpleGRASP.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="kernel.cu" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B958AB33-802C-4EB7-9EF8-C87528AF2E87}</ProjectGuid>
     <RootNamespace>GRASP</RootNamespace>
@@ -150,13 +161,6 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
       <TargetMachinePlatform>64</TargetMachinePlatform>
     </CudaCompile>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <CudaCompile Include="kernel.cu" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Lista.h" />
-    <ClInclude Include="SimplleGRASP.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 8.0.targets" />
