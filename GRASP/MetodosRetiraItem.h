@@ -22,9 +22,9 @@ void retira_menor_indice(int number_of_itens, bool *solutionParcial, item *size_
 	for (int i = 0; i < tamanho_RCL; i++) {
 		for (int j = 0; j < number_of_itens; j++) {
 			if (solutionParcial[j]) {
-				if (((float)size_of_itens[j].valor / (float)size_of_itens[j].peso) < peso_valor) {
+				if (size_of_itens[j].ganho < peso_valor) {
 					idAux = j;
-					peso_valor = (float)size_of_itens[j].valor / (float)size_of_itens[j].peso;
+					peso_valor = size_of_itens[j].ganho;
 				}
 			}
 		}
@@ -143,4 +143,57 @@ void retira_menor_valor(int number_of_itens, bool *solutionParcial, item *size_o
 	//revisao(number_of_itens, solutionParcial, size_of_itens);
 
 	free(rcl);
+}
+
+void roleta(bool *solutionParcial, item *size_of_itens, int number_of_itens, int &peso, int &valor) {
+	struct roleta {
+		int id;
+		float ganho;
+	};
+
+	float soma_ganhos = 0;
+	int tamanho = 0;
+
+	for (int i = 0; i < number_of_itens; i++) {
+		if (solutionParcial[i]) {
+			tamanho++;
+			soma_ganhos += size_of_itens[i].ganho;
+		}
+
+	}
+
+	roleta *iten_roleta;
+	iten_roleta = (roleta *)malloc(tamanho * sizeof(roleta));
+
+	roleta aux;
+	aux.ganho = 0;
+	aux.id = 0;
+	float anterior = 0;
+
+	for (int j = 0; j < tamanho; j++) {
+		for (int i = 0; i < number_of_itens; i++) {
+			if (solutionParcial[i]) {
+				if (size_of_itens[i].ganho > aux.ganho) {
+					aux.ganho = size_of_itens[i].ganho;
+					aux.id = i;
+				}
+			}
+		}
+		iten_roleta[j].ganho = (soma_ganhos - aux.ganho) + anterior;
+		iten_roleta[j].id = aux.id;
+		anterior += soma_ganhos - aux.ganho;
+	}
+
+	float id_rand = rand() % (int)anterior;
+
+	for (int i = 0; i < tamanho; i++) {
+		if (iten_roleta[i].ganho >= id_rand) {
+			id_rand = iten_roleta[i].id;
+			break;
+		}
+	}
+
+	solutionParcial[(int)id_rand] = 0;
+	valor -= size_of_itens[(int)id_rand].valor;
+	peso -= size_of_itens[(int)id_rand].peso;
 }

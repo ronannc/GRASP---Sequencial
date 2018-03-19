@@ -34,7 +34,7 @@ int main() {
 	int tamanho_RCL = 30;
 	
 	//numero de iterações que o GRASP fara
-	int max_iter = 100000;
+	int max_iter = 1000;
 
 	// numero de elementos
 	int quantidade_itens = 0;
@@ -45,7 +45,7 @@ int main() {
 	//recebendo entrada, quantidade e capacidade da mochila
 	entrada_dados(quantidade_itens, capacidade_mochila);
 
-	//Vetor usado para guardar peso e valor e se esta ou nao na mochila
+	//Vetor usado para guardar peso, valor e ganho
 	item *itens;
 	itens = (item *)malloc(quantidade_itens * sizeof(item));
 
@@ -62,11 +62,10 @@ int main() {
 	selection_sort(itens, quantidade_itens);
 
 	//imprime os itens e seu indece de ganho de modo ordenado
-	float aux = 0;
-	for (int i = 0; i < quantidade_itens; i++) {
-		aux = (float) itens[i].valor / (float) itens[i].peso;
-		printf("%d %d %f\n", itens[i].peso, itens[i].valor, aux);
-	}
+	
+	//for (int i = 0; i < quantidade_itens; i++) {
+	//	printf("%d %d %f\n", itens[i].peso, itens[i].valor, itens[i].ganho);
+	//}
 
 	//system("pause");
 
