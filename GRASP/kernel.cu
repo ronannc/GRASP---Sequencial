@@ -17,6 +17,8 @@ Tamanho dos itens.
 #include "Selection_Sort.h"
 #include "time.h"
 
+#include "SaidaDados.h"
+
 int maximo(int a, int b);
 int knapSack(int W, item *itens, int n);
 
@@ -31,7 +33,7 @@ int main() {
 	int decaimento_temperatura = 1;
 
 	//tamanha usado para tornar a geração da solução inicial e busca aleatoria, se 1 fica modo guloso
-	int tamanho_RCL = 30;
+	int tamanho_RCL = 10;
 	
 	//numero de iterações que o GRASP fara
 	int max_iter = 1000;
@@ -103,7 +105,7 @@ int main() {
 	double tempo_gasto;
 
 	//t0 = clock();
-	//	printf("recursivo: %d\n", knapSack(capacidade_mochila, itens, quantidade_itens));
+		//printf("recursivo: %d\n", knapSack(capacidade_mochila, itens, quantidade_itens));
 	//tf = clock();
 	
 	//tempo gasto pelo GRASP
@@ -114,11 +116,14 @@ int main() {
 	//rodadndo o GRASP sequncial
 	//valor da solução
 	int max_valor = 0;
+	saida_header();
+	for (int k = 0; k < 100; k++) {
 	t0 = clock();
 		simpleGRASP(max_iter, quantidade_itens, capacidade_mochila, itens, soluctions, temperatura, decaimento_temperatura, tamanho_RCL, seed, max_valor);
 	tf = clock();
 
 	tempo_gasto = ((double)(tf - t0)) / CLOCKS_PER_SEC;
+	saida_body(max_valor, tempo_gasto, max_iter);
 	printf("\n");
 	printf("Tempo gasto GRASP: %lf s\n", tempo_gasto);
 
@@ -130,7 +135,7 @@ int main() {
 
 	printf("\n");
 	printf("fim :)\n\n");
-
+	}
 	free(itens);
 	free(soluctions);
 	system("pause");

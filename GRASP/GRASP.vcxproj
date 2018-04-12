@@ -24,6 +24,7 @@
     <ClInclude Include="MetodosCompletaSolucao.h" />
     <ClInclude Include="MetodosRetiraItem.h" />
     <ClInclude Include="objeto.h" />
+    <ClInclude Include="SaidaDados.h" />
     <ClInclude Include="Selection_Sort.h" />
     <ClInclude Include="SimpleGRASP.h" />
     <ClInclude Include="Simulated_Annealing.h" />

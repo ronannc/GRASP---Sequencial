@@ -1,6 +1,3 @@
-#pragma once
-
-//#include "objeto.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -156,7 +153,7 @@ void roleta(bool *solutionParcial, item *size_of_itens, int number_of_itens, int
 
 	for (int i = 0; i < number_of_itens; i++) {
 		if (solutionParcial[i]) {
-			tamanho++;
+			++tamanho;
 			soma_ganhos += size_of_itens[i].ganho;
 		}
 
@@ -185,15 +182,16 @@ void roleta(bool *solutionParcial, item *size_of_itens, int number_of_itens, int
 	}
 
 	float id_rand = rand() % (int)anterior;
+	int aux_id = 0;
 
 	for (int i = 0; i < tamanho; i++) {
 		if (iten_roleta[i].ganho >= id_rand) {
-			id_rand = iten_roleta[i].id;
+			aux_id = iten_roleta[i].id;
 			break;
 		}
 	}
 
-	solutionParcial[(int)id_rand] = 0;
-	valor -= size_of_itens[(int)id_rand].valor;
-	peso -= size_of_itens[(int)id_rand].peso;
+	solutionParcial[aux_id] = 0;
+	valor -= size_of_itens[aux_id].valor;
+	peso -= size_of_itens[aux_id].peso;
 }

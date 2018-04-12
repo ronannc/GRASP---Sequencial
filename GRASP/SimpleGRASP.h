@@ -32,7 +32,7 @@
 
 	int  i, j = 0;
 
-	int valor_parcial, peso_parcial = 0;
+	int valor_parcial = 0, peso_parcial = 0;
 
 	for (i = 0; i < max_iter; i++) {
 
@@ -41,20 +41,20 @@
 		//gera solução inicial
 		GreedyRandomizedConstruction(number_of_itens, solutionParcial, size_of_itens, bin_capacity, seed + i, tamanho_RCL, peso_parcial, valor_parcial);
 
-		printf("Solucao gerada inicialmente\n");
-		printf("peso: %d  valor: %d\n\n", peso_parcial, valor_parcial);
+		//printf("Solucao gerada inicialmente\n");
+		//printf("peso: %d  valor: %d\n\n", peso_parcial, valor_parcial);
 
-		revisao(number_of_itens, solutionParcial, size_of_itens);
+		//revisao(number_of_itens, solutionParcial, size_of_itens);
 
 		//faz a busca local tentando melhorar a solução gerada
-		//LocalSearch(number_of_itens, solutionParcial, bin_capacity, size_of_itens, seed + i, valor_parcial, peso_parcial, tamanho_RCL);
+		LocalSearch(number_of_itens, solutionParcial, bin_capacity, size_of_itens, seed + i, valor_parcial, peso_parcial, tamanho_RCL);
 		
-		SA(number_of_itens, solutionParcial, bin_capacity, size_of_itens, seed + i, valor_parcial, peso_parcial, temperatura, decaimento_temperatura, tamanho_RCL);
+		//SA(number_of_itens, solutionParcial, bin_capacity, size_of_itens, seed + i, valor_parcial, peso_parcial, temperatura, decaimento_temperatura, tamanho_RCL, max_iter);
 
-		printf("Solucao gerado depois da busca \n");
-	    printf("peso: %d  valor: %d\n\n", peso_parcial, valor_parcial);
+		//printf("Solucao gerado depois da busca \n");
+	    //printf("peso: %d  valor: %d\n\n", peso_parcial, valor_parcial);
 
-		revisao(number_of_itens, solutionParcial, size_of_itens);
+		//revisao(number_of_itens, solutionParcial, size_of_itens);
 
 		//atualiza a solução
 		if (valor_parcial > max_valor) {
@@ -91,7 +91,7 @@
 
 		roleta(solutionParcial, size_of_itens, number_of_itens, peso_parcial, valor_parcial);
 		
-		//retira_menor_indice(number_of_itens, solutionParcial, size_of_itens, peso_parcial, valor_parcial, 5, seed);
+		//retira_menor_indice(number_of_itens, solutionParcial, size_of_itens, peso_parcial, valor_parcial, 1, seed);
 
 		//retira_maior_peso(number_of_itens, solutionParcial, size_of_itens, peso_parcial, valor_parcial, 5, seed);
 
@@ -109,7 +109,6 @@
 
 }
 
- 
  void UpdateSolution(bool *solutionParcial, bool *solutionFinal, int number_of_itens) {
 
 	for (int j = 0; j < number_of_itens; j++) {

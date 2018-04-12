@@ -1,6 +1,15 @@
 #include <stdlib.h>
+#include <math.h>
 
-void SA(int number_of_itens, bool *solutionParcial, int bin_capacity, item *size_of_itens, int seed, int valor_parcial, int peso_parcial, int temperatura, int decaimento_temperatura, int tamanho_RCL) {
+void copia_solucao(int &current_valor, int &current_peso, bool *current_soluction, int num, int peso_parcial, int valor_parcial, bool *soluctionParcial) {
+	for (int i = 0; i < num; i++) {
+		current_soluction[i] = soluctionParcial[i];
+	}
+	current_valor = valor_parcial;
+	current_peso = peso_parcial;
+}
+
+void SA(int number_of_itens, bool *solutionParcial, int bin_capacity, item *size_of_itens, int seed, int valor_parcial, int peso_parcial, int temperatura, int decaimento_temperatura, int tamanho_RCL, int interacao) {
 
 	//salvando a solucao gerada inicialmente
 	int temperaturaFinal = temperatura;
@@ -8,32 +17,52 @@ void SA(int number_of_itens, bool *solutionParcial, int bin_capacity, item *size
 	bool *current_soluctoin;
 	current_soluctoin = (bool *)malloc(number_of_itens * sizeof(bool));
 
-	if (!solutionParcial) {
+	if (!current_soluctoin) {
 		printf("Sem memoria disponivel!\n");
 		//exit(1);
 	}
-	int i = 0;
-	for (i = 0; i < number_of_itens; i++) {
-		current_soluctoin[i] = solutionParcial[i];
+	int currente_valor;
+	int current_peso;
+
+
+	bool *sa_soluctoin;
+	sa_soluctoin = (bool *)malloc(number_of_itens * sizeof(bool));
+
+	if (!sa_soluctoin) {
+		printf("Sem memoria disponivel!\n");
+		//exit(1);
 	}
-	int currente_valor = valor_parcial;
-	int current_peso = peso_parcial;
+	int sa_valor;
+	int sa_peso;
+
+
+	copia_solucao(currente_valor, current_peso, current_soluctoin, number_of_itens, peso_parcial, valor_parcial, solutionParcial);
+	copia_solucao(sa_valor, sa_peso, sa_soluctoin, number_of_itens, peso_parcial, valor_parcial, solutionParcial);
+
+	int i = 0;
+	int delta = 0;
 
 	while (temperaturaFinal > 0) {
+		for (i = 0; i < interacao; i++) {
+			//gera vizinho (retiro um elemento sorteando como roleta, e coloco o elemento com o melhor indice de ganho disponivel)
+			roleta(solutionParcial, size_of_itens, number_of_itens, peso_parcial, valor_parcial);
+			max_indice(number_of_itens, solutionParcial, size_of_itens, bin_capacity, 1, peso_parcial, valor_parcial, seed);
 
-		roleta(solutionParcial, size_of_itens, number_of_itens, peso_parcial, valor_parcial);
+			delta = currente_valor - valor_parcial;
 
-		max_indice(number_of_itens, solutionParcial, size_of_itens, bin_capacity, 1, peso_parcial, valor_parcial, seed);
-
-		if (valor_parcial > currente_valor) {
-			//aceita a solucao
-			currente_valor = valor_parcial;
-			current_peso = peso_parcial;
-			for (i = 0; i < number_of_itens; i++) {
-				current_soluctoin[i] = solutionParcial[i];
+			if (delta < 0) {
+				copia_solucao(currente_valor, current_peso, current_soluctoin, number_of_itens, peso_parcial, valor_parcial, solutionParcial);
+				if (currente_valor > sa_valor) {
+					copia_solucao(sa_valor, sa_peso, sa_soluctoin, number_of_itens, current_peso, currente_valor, current_soluctoin);
+				}
 			}
-		}
-		else {
+			else {
+
+				if (rand() / RAND_MAX < exp(-delta / temperatura)) {
+					copia_solucao(currente_valor, current_peso, current_soluctoin, number_of_itens, peso_parcial, valor_parcial, solutionParcial);
+				}
+			}
+
 			//verifica temperatura
 			if (rand() % temperatura < temperaturaFinal) {
 				valor_parcial = currente_valor;
@@ -45,8 +74,8 @@ void SA(int number_of_itens, bool *solutionParcial, int bin_capacity, item *size
 
 			}
 			temperaturaFinal -= decaimento_temperatura;
+
 		}
-
-
 	}
+	copia_solucao(valor_parcial, peso_parcial, solutionParcial, number_of_itens, sa_peso, sa_valor, sa_soluctoin);
 }
